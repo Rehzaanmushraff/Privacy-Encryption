@@ -7,12 +7,11 @@ import time
 import random
 import string
 from io import BytesIO
-# from Crypto.PublicKey import RSA
 from Crypto.PublicKey import RSA
-
 from Crypto.Cipher import PKCS1_OAEP
 import hashlib
 import qrcode
+import app1
 
 # Function to convert a file to base64
 def get_base64(bin_file):
