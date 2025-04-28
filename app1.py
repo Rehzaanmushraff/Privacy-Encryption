@@ -15,6 +15,7 @@ import string
 from io import BytesIO
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
+from gsheets import save_to_gsheet
 import hashlib
 import qrcode
 
@@ -92,7 +93,7 @@ if message:
         encryption_time_mde = time.time() - start_time
         st.write(f"Encrypted Message (MDE): {encrypted_message_mde}")
         st.write(f"Encryption Time (MDE): {encryption_time_mde:.4f} seconds")
-        
+        save_to_gsheet(message, encrypted_message_mde, "MDE")
 
         # Measure decryption time
         start_time = time.time()
@@ -111,7 +112,7 @@ if message:
         encryption_time_rsa = time.time() - start_time
         st.write(f"Encrypted Message (RSA): {encrypted_message_rsa}")
         st.write(f"Encryption Time (RSA): {encryption_time_rsa:.4f} seconds")
-        
+        save_to_gsheet(message, encrypted_message_rsa, "RSA")
 
         # Measure decryption time
         start_time = time.time()
