@@ -127,10 +127,10 @@ if message:
         def validate_pem():
             try:
                 with open('credentials.json') as f:
-                creds = json.load(f)
-                key = RSA.import_key(creds['private_key'])
-                st.success("✅ Valid PEM Format")
-                return True
+                    creds = json.load(f)
+                    key = RSA.import_key(creds['private_key'])
+                    st.success("✅ Valid PEM Format")
+                    return True
             except Exception as e:
                 st.error(f"❌ PEM Error: {str(e)}")
                 return False
