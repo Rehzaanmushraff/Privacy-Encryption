@@ -15,18 +15,18 @@ import string
 from io import BytesIO
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
-from gsheets import save_to_gsheet
 import hashlib
-import qrcode
+from gsheets import save_to_gsheet
 import requests 
+import qrcode
 
-
+# Function to convert a file to base64
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
-
+# Function to set the background of the Streamlit app
 def set_background(png_file):
     bin_str = get_base64(png_file)
     page_bg_img = f'''
@@ -45,7 +45,7 @@ def set_background(png_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Set the background image for the app
-set_background('7.jpg')
+set_background('Background/7.jpg')
 
 # MDE Encryption and Decryption
 def encrypt_mde(data):
@@ -57,8 +57,8 @@ def decrypt_mde(data):
 # RSA Encryption and Decryption
 def generate_rsa_keys():
     key = RSA.generate(2048)
-    private_key = key.export_key()(format='PEM').decode('utf-8')
-    public_key = key.publickey().export_key(format='PEM').decode('utf-8')
+    private_key = key.export_key()
+    public_key = key.publickey().export_key()
     return private_key, public_key
 
 def encrypt_rsa(public_key, data):
@@ -68,7 +68,7 @@ def encrypt_rsa(public_key, data):
     return base64.b64encode(encrypted).decode()
 
 def decrypt_rsa(private_key, encrypted_data):
-    rsa_key = RSA.import_key(private_key_str)
+    rsa_key = RSA.import_key(private_key)
     cipher = PKCS1_OAEP.new(rsa_key)
     encrypted_data = base64.b64decode(encrypted_data)
     decrypted = cipher.decrypt(encrypted_data).decode()
@@ -94,7 +94,6 @@ if message:
         encryption_time_mde = time.time() - start_time
         st.write(f"Encrypted Message (MDE): {encrypted_message_mde}")
         st.write(f"Encryption Time (MDE): {encryption_time_mde:.4f} seconds")
-        save_to_gsheet(message, encrypted_message_mde, "MDE")
 
         # Measure decryption time
         start_time = time.time()
@@ -113,7 +112,6 @@ if message:
         encryption_time_rsa = time.time() - start_time
         st.write(f"Encrypted Message (RSA): {encrypted_message_rsa}")
         st.write(f"Encryption Time (RSA): {encryption_time_rsa:.4f} seconds")
-        save_to_gsheet(message, encrypted_message_rsa, "RSA")
 
         # Measure decryption time
         start_time = time.time()
@@ -121,19 +119,3 @@ if message:
         decryption_time_rsa = time.time() - start_time
         st.write(f"Decrypted Message (RSA): {decrypted_message_rsa}")
         st.write(f"Decryption Time (RSA): {decryption_time_rsa:.4f} seconds")
-        
-        def save_message_to_backend(original_message, encrypted_message):
-            backend_url = "https://privacy-encryption.onrender.com/messages/"  
-            payload = {
-                    "original_message": original_message,
-                    "encrypted_message": encrypted_message
-                    }
-            try:
-                response = requests.post(backend_url, json=payload)
-                if response.status_code == 200:
-                    st.success("Message saved successfully to cloud!")
-                else:
-                    st.error(f"Failed to save message. Status code: {response.status_code}")
-            except Exception as e:
-                    st.error(f"Error connecting to server: {e}")
-
