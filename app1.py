@@ -57,8 +57,8 @@ def decrypt_mde(data):
 # RSA Encryption and Decryption
 def generate_rsa_keys():
     key = RSA.generate(2048)
-    private_key = key.export_key()
-    public_key = key.publickey().export_key()
+    private_key = key.export_key()(format='PEM').decode('utf-8')
+    public_key = key.publickey().export_key(format='PEM').decode('utf-8')
     return private_key, public_key
 
 def encrypt_rsa(public_key, data):
@@ -68,7 +68,7 @@ def encrypt_rsa(public_key, data):
     return base64.b64encode(encrypted).decode()
 
 def decrypt_rsa(private_key, encrypted_data):
-    rsa_key = RSA.import_key(private_key)
+    rsa_key = RSA.import_key(private_key_str)
     cipher = PKCS1_OAEP.new(rsa_key)
     encrypted_data = base64.b64decode(encrypted_data)
     decrypted = cipher.decrypt(encrypted_data).decode()
@@ -135,8 +135,6 @@ if message:
                 st.error(f"❌ PEM Error: {str(e)}")
                 return False
 
-
-        validate_pem()
 
         def save_message_to_backend(original_message, encrypted_message):
             backend_url = "https://your-backend-url-on-render/messages/"  
