@@ -18,6 +18,7 @@ from Crypto.Cipher import PKCS1_OAEP
 from gsheets import save_to_gsheet
 import hashlib
 import qrcode
+import requests 
 
 
 def get_base64(bin_file):
@@ -121,7 +122,7 @@ if message:
         st.write(f"Decrypted Message (RSA): {decrypted_message_rsa}")
         st.write(f"Decryption Time (RSA): {decryption_time_rsa:.4f} seconds")
         
-        import requests  
+         
         @st.cache_resource
         def validate_pem():
             try:
@@ -133,6 +134,7 @@ if message:
             except Exception as e:
                 st.error(f"❌ PEM Error: {str(e)}")
                 return False
+
 
         validate_pem()
 
