@@ -19,7 +19,7 @@ import hashlib
 from gsheets import save_to_gsheet
 import requests 
 import qrcode
-
+import app
 # Function to convert a file to base64
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
