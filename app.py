@@ -39,7 +39,7 @@ def set_background(png_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Set the background image for the app
-set_background('Background/7.jpg')
+set_background('7.jpg')
 
 
 import streamlit as st
