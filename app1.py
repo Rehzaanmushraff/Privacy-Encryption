@@ -18,13 +18,13 @@ from Crypto.Cipher import PKCS1_OAEP
 import hashlib
 import qrcode
 
-# Function to convert a file to base64
+
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
-# Function to set the background of the Streamlit app
+
 def set_background(png_file):
     bin_str = get_base64(png_file)
     page_bg_img = f'''
@@ -121,7 +121,7 @@ if message:
         import requests  
 
         def save_message_to_backend(original_message, encrypted_message):
-            backend_url = "https://your-backend-url-on-render/messages/"  # Replace this after you deploy your backend
+            backend_url = "https://your-backend-url-on-render/messages/"  
             payload = {
                     "original_message": original_message,
                     "encrypted_message": encrypted_message
