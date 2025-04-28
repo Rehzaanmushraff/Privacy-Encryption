@@ -117,3 +117,21 @@ if message:
         decryption_time_rsa = time.time() - start_time
         st.write(f"Decrypted Message (RSA): {decrypted_message_rsa}")
         st.write(f"Decryption Time (RSA): {decryption_time_rsa:.4f} seconds")
+        
+        import requests  
+
+        def save_message_to_backend(original_message, encrypted_message):
+            backend_url = "https://your-backend-url-on-render/messages/"  # Replace this after you deploy your backend
+            payload = {
+                    "original_message": original_message,
+                    "encrypted_message": encrypted_message
+                    }
+            try:
+                response = requests.post(backend_url, json=payload)
+                if response.status_code == 200:
+                    st.success("Message saved successfully to cloud!")
+                else:
+                    st.error(f"Failed to save message. Status code: {response.status_code}")
+            except Exception as e:
+                    st.error(f"Error connecting to server: {e}")
+
