@@ -1,7 +1,7 @@
-streamlit
-pycryptodome
 pandas
 qrcode
 requests
-gspread
-oauth2client
+pycryptodome==3.20.0
+streamlit==1.32.0
+gspread==5.11.3
+oauth2client==4.1.3
